@@ -4,11 +4,11 @@ package de.muenchen;
  * Dateiname: TerminateOOo.java
  * Projekt  : n/a
  * Funktion : Kleines Tool zum Beenden von OpenOffice.org
- * 
+ *
  * Copyright (c) 2009 Landeshauptstadt München
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the European Union Public Licence (EUPL), 
+ * it under the terms of the European Union Public Licence (EUPL),
  * version 1.0 (or any later version).
  *
  * This program is distributed in the hope that it will be useful,
@@ -17,7 +17,7 @@ package de.muenchen;
  * European Union Public Licence for more details.
  *
  * You should have received a copy of the European Union Public Licence
- * along with this program. If not, see 
+ * along with this program. If not, see
  * http://ec.europa.eu/idabc/en/document/7330
  *
  * Änderungshistorie:
@@ -27,7 +27,7 @@ package de.muenchen;
  * -------------------------------------------------------------------
  *
  * @author Daniel Benkmann (D-III-ITD-D101)
- * 
+ *
  */
 
 import com.sun.star.beans.XPropertySet;
@@ -39,7 +39,7 @@ import com.sun.star.uno.XComponentContext;
 
 /**
  * Kleines Tool zum Beenden von OpenOffice.org.
- * 
+ *
  * @author Daniel Benkmann (D-III-ITD-D101)
  */
 public class TerminateOOo
@@ -53,7 +53,7 @@ public class TerminateOOo
    * 0, wenn OpenOffice.org nicht beendet wurde bzw. irgendetwas schief gelaufen ist
    * (z.B. beim Verbindungsaufbau). Zudem wird auf der Standardausgabe eine
    * entsprechende Meldung ausgegeben.
-   * 
+   *
    * @param args
    *          wird nicht ausgewertet
    * @author Daniel Benkmann (D-III-ITD-D101)
@@ -64,23 +64,22 @@ public class TerminateOOo
     try
     {
       XMultiComponentFactory xMCF = Bootstrap.bootstrap().getServiceManager();
-      XComponentContext defaultContext =
-        (XComponentContext) UnoRuntime.queryInterface(
+      XComponentContext defaultContext = UnoRuntime.queryInterface(
           XComponentContext.class,
-          ((XPropertySet) UnoRuntime.queryInterface(XPropertySet.class, xMCF)).getPropertyValue("DefaultContext"));
-      XDesktop desktop =
-        (XDesktop) UnoRuntime.queryInterface(XDesktop.class,
+          (UnoRuntime.queryInterface(XPropertySet.class, xMCF))
+              .getPropertyValue("DefaultContext"));
+      XDesktop desktop = UnoRuntime.queryInterface(XDesktop.class,
           xMCF.createInstanceWithContext("com.sun.star.frame.Desktop",
-            defaultContext));
+              defaultContext));
 
       // Quickstarter soll das Terminieren des Prozesses nicht verhindern
-      XPropertySet xPropSet =
-        (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class, desktop);
+      XPropertySet xPropSet = UnoRuntime.queryInterface(XPropertySet.class,
+          desktop);
       xPropSet.setPropertyValue("SuspendQuickstartVeto", Boolean.TRUE);
-      //ACHTUNG: Der obige Code hat keine Auswirkung auf den Quickstarter der
-      //WollMuxBar! Wenn die WollMuxBar mit "--quickstarter" gestartet wird,
-      //kann OpenOffice nicht beendet werden.
-      
+      // ACHTUNG: Der obige Code hat keine Auswirkung auf den Quickstarter der
+      // WollMuxBar! Wenn die WollMuxBar mit "--quickstarter" gestartet wird,
+      // kann OpenOffice nicht beendet werden.
+
 
       // Versuch OOo zu beenden
       terminated = desktop.terminate();
