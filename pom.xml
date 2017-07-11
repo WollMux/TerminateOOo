@@ -7,7 +7,7 @@
 	<name>terminate-ooo</name>
 
 	<properties>
-		<libreoffice.version>4.1</libreoffice.version>
+		<libreoffice.version>5.2.7</libreoffice.version>
 	</properties>
 
 	<scm>
