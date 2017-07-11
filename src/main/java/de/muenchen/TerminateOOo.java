@@ -1,5 +1,8 @@
 package de.muenchen;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  * Dateiname: TerminateOOo.java
  * Projekt  : n/a
@@ -45,14 +48,17 @@ import com.sun.star.uno.XComponentContext;
 public class TerminateOOo
 {
 
+  private static final Logger LOGGER = LoggerFactory
+      .getLogger(TerminateOOo.class);
+
   /**
    * Stellt eine Verbindung mit OpenOffice.org her (und startet dabei einen
    * soffice-Prozess, falls noch keiner läuft) und beendet dann OpenOffice.org
-   * mittels XDesktop.terminate(). Das Programm beendet die JVM mit Statuscode 0,
-   * wenn das Beenden von Openoffice.org erfolgreich war und mit einem Statuscode !=
-   * 0, wenn OpenOffice.org nicht beendet wurde bzw. irgendetwas schief gelaufen ist
-   * (z.B. beim Verbindungsaufbau). Zudem wird auf der Standardausgabe eine
-   * entsprechende Meldung ausgegeben.
+   * mittels XDesktop.terminate(). Das Programm beendet die JVM mit Statuscode
+   * 0, wenn das Beenden von Openoffice.org erfolgreich war und mit einem
+   * Statuscode != 0, wenn OpenOffice.org nicht beendet wurde bzw. irgendetwas
+   * schief gelaufen ist (z.B. beim Verbindungsaufbau). Zudem wird auf der
+   * Standardausgabe eine entsprechende Meldung ausgegeben.
    *
    * @param args
    *          wird nicht ausgewertet
@@ -80,25 +86,22 @@ public class TerminateOOo
       // WollMuxBar! Wenn die WollMuxBar mit "--quickstarter" gestartet wird,
       // kann OpenOffice nicht beendet werden.
 
-
       // Versuch OOo zu beenden
       terminated = desktop.terminate();
-    }
-    catch (Exception e)
+    } catch (Exception e)
     {
-      System.out.println("Exception occured while trying to terminate OpenOffice.org!");
-      e.printStackTrace();
+      LOGGER.error(
+          "Exception occured while trying to terminate OpenOffice.org!", e);
       System.exit(2);
     }
 
     if (terminated)
     {
-      System.out.println("OpenOffice.org was terminated successfully!");
+      LOGGER.info("OpenOffice.org was terminated successfully!");
       System.exit(0);
-    }
-    else
+    } else
     {
-      System.out.println("OpenOffice.org was NOT terminated!");
+      LOGGER.info("OpenOffice.org was NOT terminated!");
       System.exit(1);
     }
   }
